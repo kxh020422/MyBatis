@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--引入properties文件-->
+    <properties resource="jdbc.properties"/>
+
+    <!-- 设置类型别名：为某个具体的类型设置一个别名 -->
+    <typeAliases>
+        <!--
+            type：设置需要起别名的类型
+            alias：设置某个类型的别名
+            如果不设置alias值，那么默认以类名为默认的别名且不区分大小写
+         -->
+        <!--<typeAlias type="com.yitsd.pojo.User" alias="UserEntity"/>-->
+
+        <!--该包下的所有的类将全部拥有默认的别名（类名且不区分大小写）-->
+        <package name="com.yitsd.pojo"/>
+    </typeAliases>
+
+    <!--
+        environments：配置链接数据库的环境
+        属性：
+            default：默认使用的环境id
+    -->
+    <!--设置连接数据库的环境-->
+    <environments default="development">
+        <!--
+            environment:设置一个具体的链接数据库环境
+            属性：
+                id：设置环境的唯一标识 不能重复
+        -->
+        <environment id="development">
+            <!--
+                transactionManager：设置事务管理器
+                属性：
+                    type：设置事务管理的方式
+                        type="JDBC" 表示使用JDBC原生的事务管理方式
+                        type="MANAGED" 被管理 例如Spring
+            -->
+            <transactionManager type="JDBC"/>
+            <!--
+                dataSource：数据源
+                属性：
+                    type="POOLED" 表示使用数据库连接池
+                    type="UNPOOLED" 表示不使用数据库连接池，每次使用重新创建链接
+                    type="JNDI" 表示使用上下文的数据源
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url"
+                          value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;"/>
+                <property name="username" value="root"/>
+                <property name="password" value="kouxiaohui0310"/>
+            </dataSource>
+        </environment>
+
+
+    </environments>
+
+
+    <!--引入映射文件-->
+    <!--
+        以包的方式引入映射文件
+            1.mapper接口和映射文件的包必须一致
+            2.mapper接口的名字和映射文件必须一致
+    -->
+
+    <mappers>
+        <package name="com.yitsd.mapper"/>
+    </mappers>
+</configuration>

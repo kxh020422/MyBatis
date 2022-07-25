@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yitsd.mapper.UserMapper">
+
+    <!--
+        mapper接口和映射文件要保证两个一致：
+        1.mapper接口的全类名和映射文件的namespace一致
+        2.mapper接口中的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <insert id="insertUser">
+        insert into t_user values(null,'admin','123456',18,'男','12345@qq.com')
+    </insert>
+
+    <delete id="delUser">
+        delete from t_user where id=1
+    </delete>
+
+    <update id="updateUser">
+        update t_user set username='hello' where id=2
+    </update>
+
+    <select id="getUserList" resultType="User">
+        select * from t_user
+    </select>
+
+    <select id="getUserById" resultType="User">
+        select * from t_user where id=5
+    </select>
+
+    <!--
+        resultType:设置查询结果类型（查询的字段与实体的属性名称一一对应）
+        resultMap:自定义映射，处理一对多或多对一的映射关系
+    -->
+
+
+</mapper>

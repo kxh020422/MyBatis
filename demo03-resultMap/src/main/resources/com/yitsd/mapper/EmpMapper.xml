@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yitsd.mapper.EmpMapper">
+
+    <!--Emp getEmpByEmpId(@Param("id") Integer id);-->
+
+    <resultMap id="empResultMap" type="Emp">
+        <!--id处理主键与实体类中的映射关系哦-->
+        <id column="emp_id" property="empId"/>
+        <!--处理普通字段和实体类中属性的映射关系-->
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+    <select id="getEmpByEmpId" resultMap="empResultMap">
+        select *
+        from t_emp
+        where emp_id = #{id}
+    </select>
+
+    <select id="getEmpByEmpIdOld" resultType="Emp">
+        select *
+        from t_emp
+        where emp_id = #{id}
+    </select>
+
+
+    <resultMap id="EmpAndDeptResultMapOne" type="Emp">
+        <!--id处理主键与实体类中的映射关系哦-->
+        <id column="emp_id" property="empId"/>
+        <!--处理普通字段和实体类中属性的映射关系-->
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <result column="dept_id" property="dept.deptId"/>
+        <result column="dept_name" property="dept.deptName"/>
+    </resultMap>
+
+
+    <resultMap id="EmpAndDeptResultMap" type="Emp">
+        <!--id处理主键与实体类中的映射关系哦-->
+        <id column="emp_id" property="empId"/>
+        <!--处理普通字段和实体类中属性的映射关系-->
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <association property="dept" javaType="Dept">
+            <id column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+        </association>
+    </resultMap>
+
+    <!--Emp getEmpAndDeptByEmpId(@Param("id") Integer id);-->
+    <select id="getEmpAndDeptByEmpId" resultMap="EmpAndDeptResultMap">
+        select *
+        from t_emp
+                 left join t_dept on t_emp.dept_id = t_dept.dept_id
+        where t_emp.emp_id = #{id};
+    </select>
+
+    <resultMap id="empAndDeptByStepResultMap" type="Emp">
+        <!--id处理主键与实体类中的映射关系哦-->
+        <id column="emp_id" property="empId"/>
+        <!--处理普通字段和实体类中属性的映射关系-->
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
+        <association property="dept"
+                     select="com.yitsd.mapper.DeptMapper.getEmpAndDeptByStepTWO"
+                     column="dept_id">
+        </association>
+    </resultMap>
+
+    <!--Emp getEmpAndDeptByStepONE(@Param("id") Integer id);-->
+    <select id="getEmpAndDeptByStepONE" resultMap="empAndDeptByStepResultMap">
+        select *
+        from t_emp
+        where emp_id = #{id}
+    </select>
+
+    <!--List<Emp> getDeptAndEmpByStepTwo(@Param("deptId") Integer id);-->
+    <select id="getDeptAndEmpByStepTwo" resultType="Emp">
+        select *
+        from t_emp
+        where dept_id = #{deptId}
+    </select>
+    
+
+
+
+</mapper>
